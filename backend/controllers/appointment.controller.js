@@ -1,51 +1,32 @@
 const Appointment = require('../models/appointment.model');
 const Doctor = require('../models/doctor.model');
 const User = require('../models/user.model');
-const sendEmail = require('../utils/email');
+
 
 const bookAppointment = async (req, res) => {
   try {
-    const { doctorId, date, time } = req.body;
-    const patientId = req.user._id;
-
-    const doctor = await Doctor.findById(doctorId).populate('userId', 'name');
+    const { doctorId, date, time } = req.body
+    const patientId = req.user._id
+    const doctor = await Doctor.findById(doctorId).populate('userId', 'name')
     if (!doctor) {
-      return res.status(404).json({ message: 'Doctor not found' });
+      return res.status(404).json({ message: 'Doctor not found' })
     }
-
     const existing = await Appointment.findOne({
       doctorId, date, time, status: { $ne: 'cancelled' }
-    });
+    })
     if (existing) {
-      return res.status(400).json({ message: 'This slot is already booked' });
+      return res.status(400).json({ message: 'This slot is already booked' })
     }
-
     const appointment = await Appointment.create({
       patientId, doctorId, date, time, status: 'booked',
-    });
+    })
 
-    const patient = await User.findById(patientId);
-    await sendEmail({
-      to: patient.email,
-      subject: 'Appointment Confirmed',
-      html: `
-        <h2>Appointment Confirmed!</h2>
-        <p>Dear ${patient.name},</p>
-        <p>Your appointment has been booked successfully.</p>
-        <p><b>Doctor:</b> Dr. ${doctor.userId.name}</p>
-        <p><b>Date:</b> ${date}</p>
-        <p><b>Time:</b> ${time}</p>
-        <p><b>Hospital:</b> ${process.env.HOSPITAL_NAME}</p>
-      `
-    });
-
-    res.status(201).json({ message: 'Appointment booked successfully', appointment });
+    res.status(201).json({ message: 'Appointment booked successfully', appointment })
   } catch (error) {
-    console.error('Error booking appointment:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error('Error booking appointment:', error)
+    res.status(500).json({ message: 'Internal server error' })
   }
-};
-
+}
 const getMyAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find({ patientId: req.user._id })
