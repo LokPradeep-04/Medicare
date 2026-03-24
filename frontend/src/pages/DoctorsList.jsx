@@ -50,13 +50,11 @@ const DoctorsList = () => {
     <div>
       <Navbar />
 
-      {/* Header */}
       <div className='bg-white border-b border-gray-100 py-8 px-4'>
         <div className='max-w-7xl mx-auto'>
           <h1 className='text-3xl font-bold text-gray-900 mb-2'>Our Doctors</h1>
           <p className='text-gray-500'>Find and book appointments with our specialists</p>
 
-          {/* Search */}
           <div className='mt-5 max-w-md'>
             <input
               type='text'
@@ -71,7 +69,6 @@ const DoctorsList = () => {
 
       <div className='max-w-7xl mx-auto px-4 py-8'>
 
-        {/* Department Filter */}
         <div className='flex flex-wrap gap-2 mb-8'>
           {departments.map(dept => (
             <button
@@ -88,12 +85,10 @@ const DoctorsList = () => {
           ))}
         </div>
 
-        {/* Results */}
         <p className='text-sm text-gray-500 mb-5'>
           {filtered.length} doctor{filtered.length !== 1 ? 's' : ''} found
         </p>
 
-        {/* Grid */}
         {filtered.length === 0 ? (
           <div className='text-center py-20'>
             <p className='text-4xl mb-3'>👨‍⚕️</p>

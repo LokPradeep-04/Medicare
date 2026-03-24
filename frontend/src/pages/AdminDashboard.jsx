@@ -1,15 +1,16 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useCallback } from 'react'
+import { AuthContext } from '../context/AuthContext'
 import Navbar from '../components/Navbar'
 import Loader from '../components/Loader'
-import StatCard from '../components/StatCard'
-import FilterTabs from '../components/FilterTabs'
 import AdminDoctorCard from '../components/AdminDoctorCard'
 import AdminPatientCard from '../components/AdminPatientCard'
 import AdminAppointmentCard from '../components/AdminAppointmentCard'
 import AddDoctorForm from '../components/AddDoctorForm'
-import { AuthContext } from '../context/AuthContext'
+import FilterTabs from '../components/FilterTabs'
+import StatCard from '../components/StatCard'
 
 const TABS = ['Overview', 'Doctors', 'Patients', 'Appointments']
+const API_BASE_URL = import.meta.env.VITE_API_URL
 
 const AdminDashboard = () => {
 
@@ -23,13 +24,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true)
   const [showAddDoctor, setShowAddDoctor] = useState(false)
 
-  const API_BASE_URL = import.meta.env.VITE_API_URL
-
-  useEffect(() => {
-    fetchAll()
-  }, [])
-
-  const fetchAll = async () => {
+  const fetchAll = useCallback(async () => {
     setLoading(true)
     try {
       const [statsRes, doctorsRes, patientsRes, appointmentsRes] = await Promise.all([
@@ -55,7 +50,11 @@ const AdminDashboard = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [token])
+
+  useEffect(() => {
+    fetchAll()
+  }, [fetchAll])
 
   const handleDeleteDoctor = async (id) => {
     if (!confirm('Are you sure you want to delete this doctor?')) return
@@ -90,7 +89,6 @@ const AdminDashboard = () => {
       <Navbar />
       <div className='max-w-6xl mx-auto px-4 py-10'>
 
-        {/* Header */}
         <div className='flex items-center justify-between mb-8'>
           <div>
             <h1 className='text-2xl font-bold text-gray-900'>
@@ -108,7 +106,6 @@ const AdminDashboard = () => {
           </button>
         </div>
 
-        {/* Tabs */}
         <div className='mb-6'>
           <FilterTabs
             filters={TABS}
@@ -117,7 +114,6 @@ const AdminDashboard = () => {
           />
         </div>
 
-        {/* Overview Tab */}
         {activeTab === 'Overview' && (
           <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
             <StatCard
@@ -141,7 +137,6 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* Doctors Tab */}
         {activeTab === 'Doctors' && (
           <div className='flex flex-col gap-3'>
             {doctors.filter(d => d.userId !== null).map(doctor => (
@@ -154,7 +149,6 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* Patients Tab */}
         {activeTab === 'Patients' && (
           <div className='flex flex-col gap-3'>
             {patients.map(patient => (
@@ -166,7 +160,6 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* Appointments Tab */}
         {activeTab === 'Appointments' && (
           <div className='flex flex-col gap-3'>
             {appointments.map(appointment => (
@@ -181,7 +174,6 @@ const AdminDashboard = () => {
 
       </div>
 
-      {/* Add Doctor Modal */}
       {showAddDoctor && (
         <AddDoctorForm
           token={token}

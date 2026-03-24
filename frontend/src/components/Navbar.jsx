@@ -20,14 +20,12 @@ const Navbar = () => {
     <nav className='bg-white shadow-sm sticky top-0 z-50'>
       <div className='max-w-7xl mx-auto px-4 py-4 flex items-center justify-between'>
 
-        {/* Logo */}
         <NavLink to='/'>
           <span className='font-bold text-xl text-gray-900'>
             Medi<span className='text-teal-600'>Care</span>
           </span>
         </NavLink>
 
-        {/* Middle Links */}
         <div className='flex items-center gap-8'>
           <NavLink to='/' end className={navLinkClass}>
             Home
@@ -52,7 +50,6 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Right Side */}
         <div className='flex items-center gap-3'>
           {!user ? (
             <>

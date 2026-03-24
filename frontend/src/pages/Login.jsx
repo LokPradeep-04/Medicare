@@ -40,7 +40,7 @@ const Login = () => {
         setError(data.message)
         toast.error(data.message || 'Login failed')
       }
-    } catch (err) {
+    } catch {
       setError('Something went wrong. Please try again.')
       toast.error('Something went wrong. Please try again.')
     } finally {
@@ -54,20 +54,17 @@ const Login = () => {
       <div className='min-h-screen bg-gray-50 flex items-center justify-center px-4'>
         <div className='bg-white rounded-2xl shadow-sm border border-gray-100 p-8 w-full max-w-md'>
 
-          {/* Header */}
           <div className='text-center mb-8'>
             <h1 className='text-2xl font-bold text-gray-900'>Welcome Back</h1>
             <p className='text-gray-500 text-sm mt-1'>Sign in to your account</p>
           </div>
 
-          {/* Error */}
           {error && (
             <div className='bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg mb-5'>
               {error}
             </div>
           )}
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className='space-y-5'>
             <div>
               <label className='block text-sm font-medium text-gray-700 mb-1.5'>
@@ -104,7 +101,6 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Footer */}
           <p className='text-center text-sm text-gray-500 mt-6'>
             Don't have an account?{' '}
             <Link to='/register' className='text-teal-600 font-medium hover:underline'>

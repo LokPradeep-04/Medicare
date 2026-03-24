@@ -2,7 +2,6 @@ const Appointment = require('../models/appointment.model');
 const Doctor = require('../models/doctor.model');
 const User = require('../models/user.model');
 
-
 const bookAppointment = async (req, res) => {
   try {
     const { doctorId, date, time } = req.body

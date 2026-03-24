@@ -25,7 +25,6 @@ const Chatbot = () => {
 
   const API_BASE_URL = import.meta.env.VITE_API_URL
 
-  // Auto scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
@@ -34,12 +33,10 @@ const Chatbot = () => {
     const message = text || input.trim()
     if (!message || loading) return
 
-    // Add user message
     setMessages(prev => [...prev, { role: 'user', content: message }])
     setInput('')
     setLoading(true)
 
-    // Update history
     historyRef.current = [
       ...historyRef.current,
       { role: 'user', content: message }
@@ -69,7 +66,7 @@ const Chatbot = () => {
           content: 'Sorry, I am having trouble. Please try again.'
         }])
       }
-    } catch (err) {
+    } catch {
       setMessages(prev => [...prev, {
         role: 'bot',
         content: 'Sorry, something went wrong. Please try again.'
@@ -81,7 +78,7 @@ const Chatbot = () => {
 
   return (
     <>
-      {/* Floating Button */}
+      
       <button
         onClick={() => setOpen(!open)}
         className='fixed bottom-6 right-6 z-50 w-14 h-14 bg-teal-600 hover:bg-teal-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center text-2xl'
@@ -89,12 +86,10 @@ const Chatbot = () => {
         {open ? '✕' : '💬'}
       </button>
 
-      {/* Chat Window */}
       {open && (
         <div className='fixed bottom-24 right-6 z-50 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden'
           style={{ height: '480px' }}>
 
-          {/* Header */}
           <div className='bg-teal-600 px-4 py-3 flex items-center gap-3'>
             <div className='w-9 h-9 bg-white/20 rounded-full flex items-center justify-center text-lg'>
               🤖
@@ -106,13 +101,11 @@ const Chatbot = () => {
             <div className='ml-auto w-2 h-2 bg-green-400 rounded-full'></div>
           </div>
 
-          {/* Messages */}
           <div className='flex-1 overflow-y-auto p-4 flex flex-col gap-3'>
             {messages.map((msg, i) => (
               <ChatMessage key={i} message={msg} />
             ))}
 
-            {/* Loading dots */}
             {loading && (
               <div className='flex justify-start'>
                 <div className='bg-gray-100 px-4 py-3 rounded-2xl rounded-bl-sm'>
@@ -131,7 +124,6 @@ const Chatbot = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick Prompts */}
           {messages.length <= 1 && (
             <div className='px-4 pb-2 flex flex-wrap gap-1.5'>
               {QUICK_PROMPTS.map(prompt => (
@@ -146,7 +138,6 @@ const Chatbot = () => {
             </div>
           )}
 
-          {/* Input */}
           <div className='p-3 border-t border-gray-100 flex gap-2'>
             <input
               className='flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-teal-500 transition-all'

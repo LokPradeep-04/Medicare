@@ -44,12 +44,10 @@ const DoctorDashboard = () => {
     }
   }
 
-  // Stats
   const total = appointments.length
   const remaining = appointments.filter(a => a.status === 'booked').length
   const completed = appointments.filter(a => a.status === 'completed').length
 
-  // Only show booked in queue
   const queue = appointments.filter(a => a.status === 'booked')
 
   if (loading) return <Loader />
@@ -59,7 +57,6 @@ const DoctorDashboard = () => {
       <Navbar />
       <div className='max-w-4xl mx-auto px-4 py-10'>
 
-        {/* Header */}
         <div className='mb-8'>
           <h1 className='text-2xl font-bold text-gray-900'>
             Welcome, Dr. {user?.name} 🩺
@@ -74,7 +71,6 @@ const DoctorDashboard = () => {
           </p>
         </div>
 
-        {/* Stats */}
         <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8'>
           <StatCard
             icon='👥'
@@ -96,7 +92,6 @@ const DoctorDashboard = () => {
           />
         </div>
 
-        {/* Queue */}
         <div className='bg-white rounded-2xl border border-gray-100 shadow-sm p-6'>
           <h2 className='text-lg font-bold text-gray-900 mb-5'>
             Today's Queue

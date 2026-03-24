@@ -1,16 +1,14 @@
 const QueueCard = ({ appointment, onComplete }) => {
 
-  const { _id, patientId, date, time, status } = appointment
+  const { _id, patientId, date, time } = appointment
 
   return (
     <div className='bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex items-center gap-4'>
 
-      {/* Avatar */}
       <div className='w-12 h-12 rounded-xl bg-teal-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0'>
         {patientId?.name?.charAt(0)}
       </div>
 
-      {/* Info */}
       <div className='flex-1'>
         <p className='font-semibold text-gray-900'>
           {patientId?.name}
@@ -38,7 +36,6 @@ const QueueCard = ({ appointment, onComplete }) => {
         </div>
       </div>
 
-      {/* Complete Button */}
       <button
         onClick={() => onComplete(_id)}
         className='bg-teal-50 text-teal-600 hover:bg-teal-100 font-semibold text-sm px-4 py-2 rounded-xl transition-colors'

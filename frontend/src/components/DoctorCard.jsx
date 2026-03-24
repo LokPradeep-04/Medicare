@@ -8,7 +8,6 @@ const DoctorCard = ({ doctor }) => {
   return (
     <div className='bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition-all'>
 
-      {/* Avatar + Info */}
       <div className='flex items-center gap-4 mb-4'>
         <div className='w-14 h-14 rounded-2xl bg-teal-600 flex items-center justify-center text-white font-bold text-xl flex-shrink-0'>
           {userId?.name?.charAt(0)}
@@ -19,7 +18,6 @@ const DoctorCard = ({ doctor }) => {
         </div>
       </div>
 
-      {/* Tags */}
       <div className='flex flex-wrap gap-2 mb-4'>
         <span className='bg-blue-50 text-blue-700 text-xs font-medium px-3 py-1 rounded-full'>
           {department}
@@ -32,7 +30,6 @@ const DoctorCard = ({ doctor }) => {
         </span>
       </div>
 
-      {/* Buttons */}
       <div className='flex gap-2'>
         <button
           onClick={() => navigate(`/doctors/${_id}`)}

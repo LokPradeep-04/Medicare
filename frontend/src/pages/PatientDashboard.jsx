@@ -68,7 +68,6 @@ const PatientDashboard = () => {
 
       <div className='max-w-5xl mx-auto px-4 py-10'>
 
-        {/* Header */}
         <div className='flex items-center justify-between mb-8'>
           <div>
             <h1 className='text-2xl font-bold text-gray-900'>
@@ -86,7 +85,6 @@ const PatientDashboard = () => {
           </button>
         </div>
 
-        {/* Stats */}
         <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8'>
           <StatCard
             icon='📅'
@@ -108,7 +106,6 @@ const PatientDashboard = () => {
           />
         </div>
 
-        {/* Filter Tabs */}
         <div className='mb-5'>
           <FilterTabs
             filters={FILTERS}
@@ -117,7 +114,6 @@ const PatientDashboard = () => {
           />
         </div>
 
-        {/* Appointments */}
         {filtered.length === 0 ? (
           <div className='text-center py-20 bg-white rounded-2xl border border-gray-100'>
             <p className='text-4xl mb-3'>📋</p>

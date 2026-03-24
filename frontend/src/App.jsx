@@ -17,14 +17,13 @@ const App = () => {
     <BrowserRouter>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
-        {/* Public Routes */}
+        
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/doctors' element={<DoctorsList />} />
         <Route path='/doctors/:id' element={<DoctorProfile />} />
 
-        {/* Patient Routes */}
         <Route path='/dashboard' element={
           <ProtectedRoute role='patient'>
             <PatientDashboard />
@@ -36,14 +35,12 @@ const App = () => {
           </ProtectedRoute>
         } />
 
-        {/* Doctor Routes */}
         <Route path='/doctor' element={
           <ProtectedRoute role='doctor'>
             <DoctorDashboard />
           </ProtectedRoute>
         } />
 
-        {/* Admin Routes */}
         <Route path='/admin' element={
           <ProtectedRoute role='admin'>
             <AdminDashboard />

@@ -8,6 +8,8 @@ import SlotPicker from '../components/SlotPicker'
 import BookingSummary from '../components/BookingSummary'
 import { AuthContext } from '../context/AuthContext'
 
+const API_BASE_URL = import.meta.env.VITE_API_URL
+
 const BookAppointment = () => {
 
   const { doctorId } = useParams()
@@ -24,10 +26,8 @@ const BookAppointment = () => {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
-  const API_BASE_URL = import.meta.env.VITE_API_URL
   const today = new Date().toISOString().split('T')[0]
 
-  // Fetch doctor
   useEffect(() => {
     const fetchDoctor = async () => {
       try {
@@ -43,7 +43,6 @@ const BookAppointment = () => {
     fetchDoctor()
   }, [doctorId])
 
-  // Fetch slots when date changes
   useEffect(() => {
     if (!date) return
     const fetchSlots = async () => {
@@ -61,7 +60,7 @@ const BookAppointment = () => {
       }
     }
     fetchSlots()
-  }, [date])
+  }, [date, doctorId])
 
   const handleBook = async () => {
     if (!date) return setError('Please select a date')
@@ -84,7 +83,7 @@ const BookAppointment = () => {
       } else {
         setError(data.message)
       }
-    } catch (err) {
+    } catch {
       setError('Something went wrong. Please try again.')
     } finally {
       setBooking(false)
@@ -121,16 +120,13 @@ const BookAppointment = () => {
           Book Appointment
         </h1>
 
-        {/* Doctor Summary */}
         {doctor && <DoctorSummaryCard doctor={doctor} />}
 
-        {/* Booking Form */}
         <div className='bg-white rounded-2xl border border-gray-100 shadow-sm p-6'>
           <h3 className='font-bold text-gray-900 text-lg mb-6'>
             Select Date & Time
           </h3>
 
-          {/* Date Picker */}
           <div className='mb-6'>
             <label className='block text-sm font-medium text-gray-700 mb-2'>
               Select Date
@@ -144,7 +140,6 @@ const BookAppointment = () => {
             />
           </div>
 
-          {/* Slot Picker */}
           {date && (
             <div className='mb-6'>
               <label className='block text-sm font-medium text-gray-700 mb-2'>
@@ -162,14 +157,12 @@ const BookAppointment = () => {
             </div>
           )}
 
-          {/* Error */}
           {error && (
             <div className='bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-4'>
               {error}
             </div>
           )}
 
-          {/* Booking Summary */}
           {selectedSlot && (
             <BookingSummary
               doctor={doctor}
@@ -178,7 +171,6 @@ const BookAppointment = () => {
             />
           )}
 
-          {/* Confirm Button */}
           <button
             onClick={handleBook}
             disabled={booking || !date || !selectedSlot}

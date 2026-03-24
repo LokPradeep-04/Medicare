@@ -48,16 +48,13 @@ const DoctorProfile = () => {
 
       <div className='max-w-4xl mx-auto px-4 py-10'>
 
-        {/* Profile Card */}
         <div className='bg-white rounded-2xl border border-gray-100 shadow-sm p-8 mb-6'>
           <div className='flex flex-col sm:flex-row gap-6 items-start'>
 
-            {/* Avatar */}
             <div className='w-24 h-24 rounded-2xl bg-teal-600 flex items-center justify-center text-white font-bold text-4xl flex-shrink-0'>
               {doctor.userId?.name?.charAt(0)}
             </div>
 
-            {/* Info */}
             <div className='flex-1'>
               <h1 className='text-2xl font-bold text-gray-900'>
                 Dr. {doctor.userId?.name}
@@ -66,7 +63,6 @@ const DoctorProfile = () => {
                 {doctor.specialization}
               </p>
 
-              {/* Tags */}
               <div className='flex flex-wrap gap-2 mt-4'>
                 <span className='bg-blue-50 text-blue-700 text-sm font-medium px-3 py-1 rounded-full'>
                   🏥 {doctor.department}
@@ -83,7 +79,6 @@ const DoctorProfile = () => {
               </div>
             </div>
 
-            {/* Book Button */}
             <button
               onClick={() => navigate(`/book/${doctor._id}`)}
               className='bg-teal-600 hover:bg-teal-700 text-white font-semibold px-8 py-3 rounded-xl transition-colors flex-shrink-0'
@@ -94,7 +89,6 @@ const DoctorProfile = () => {
           </div>
         </div>
 
-        {/* Availability */}
         <div className='bg-white rounded-2xl border border-gray-100 shadow-sm p-8'>
           <h2 className='text-lg font-bold text-gray-900 mb-6'>
             Weekly Availability

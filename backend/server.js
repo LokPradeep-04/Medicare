@@ -15,7 +15,6 @@ app.use(cors({
 
 app.use(express.json());
 
-// Routes
 const authRoutes = require('./routes/auth.routes');
 const doctorRoutes = require('./routes/doctor.routes');
 const appointmentRoutes = require('./routes/appointment.routes');

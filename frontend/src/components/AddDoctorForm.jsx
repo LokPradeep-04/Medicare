@@ -44,7 +44,7 @@ const AddDoctorForm = ({ onAdd, onClose, token }) => {
       } else {
         setError(data.message)
       }
-    } catch (err) {
+    } catch {
       setError('Something went wrong')
     } finally {
       setLoading(false)
@@ -55,7 +55,6 @@ const AddDoctorForm = ({ onAdd, onClose, token }) => {
     <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4'>
       <div className='bg-white rounded-2xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto'>
 
-        {/* Header */}
         <div className='flex items-center justify-between mb-6'>
           <h2 className='text-lg font-bold text-gray-900'>Add New Doctor</h2>
           <button

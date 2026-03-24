@@ -1,15 +1,16 @@
+
 import { createContext, useState, useEffect, useContext } from 'react'
 import Cookies from 'js-cookie'
 
 export const AuthContext = createContext()
+
+const API_BASE_URL = import.meta.env.VITE_API_URL
 
 export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(null)
   const [token, setToken] = useState(Cookies.get('token') || null)
   const [loading, setLoading] = useState(true)
-
-  const API_BASE_URL = import.meta.env.VITE_API_URL
 
   useEffect(() => {
     const fetchUser = async () => {

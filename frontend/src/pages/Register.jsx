@@ -48,7 +48,7 @@ const Register = () => {
         setError(data.message)
         toast.error(data.message || 'Registration failed')
       }
-    } catch (err) {
+    } catch {
       setError('Something went wrong. Please try again.')
       toast.error('Something went wrong. Please try again.')
     } finally {
@@ -62,19 +62,16 @@ const Register = () => {
       <div className='min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10'>
         <div className='bg-white rounded-2xl shadow-sm border border-gray-100 p-8 w-full max-w-md'>
 
-          {/* Header */}
           <div className='text-center mb-8'>
             <h1 className='text-2xl font-bold text-gray-900'>Create Account</h1>
           </div>
 
-          {/* Error */}
           {error && (
             <div className='bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg mb-5'>
               {error}
             </div>
           )}
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className='space-y-4'>
             <div>
               <label className='block text-sm font-medium text-gray-700 mb-1.5'>
@@ -174,7 +171,6 @@ const Register = () => {
             </button>
           </form>
 
-          {/* Footer */}
           <p className='text-center text-sm text-gray-500 mt-6'>
             Already have an account?{' '}
             <Link to='/login' className='text-teal-600 font-medium hover:underline'>

@@ -11,12 +11,10 @@ const AppointmentCard = ({ appointment, onCancel }) => {
   return (
     <div className='bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex items-center gap-4'>
 
-      {/* Avatar */}
       <div className='w-12 h-12 rounded-xl bg-teal-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0'>
         {doctorId?.userId?.name?.charAt(0)}
       </div>
 
-      {/* Info */}
       <div className='flex-1'>
         <p className='font-semibold text-gray-900'>
           Dr. {doctorId?.userId?.name}
@@ -30,7 +28,6 @@ const AppointmentCard = ({ appointment, onCancel }) => {
         </div>
       </div>
 
-      {/* Status + Cancel side by side */}
       <div className='flex items-center gap-2'>
         <span className={`text-xs font-semibold px-3 py-1 rounded-full ${statusStyles[status]}`}>
           {status.charAt(0).toUpperCase() + status.slice(1)}

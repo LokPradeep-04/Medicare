@@ -14,13 +14,11 @@ const seedData = async () => {
   try {
     await connectDB();
 
-    // Clear existing data
     await User.deleteMany({});
     await Doctor.deleteMany({});
     await Appointment.deleteMany({});
     console.log('Cleared existing data');
 
-    // Create Admin
     const adminPassword = await bcrypt.hash('admin123', 10);
     const admin = await User.create({
       name: 'Admin',
@@ -33,7 +31,6 @@ const seedData = async () => {
     });
     console.log('Admin created → admin@medicare.com / admin123');
 
-    // Create Patient
     const patientPassword = await bcrypt.hash('patient123', 10);
     const patient = await User.create({
       name: 'Arjun Patel',
@@ -46,7 +43,6 @@ const seedData = async () => {
     });
     console.log('Patient created → arjun@gmail.com / patient123');
 
-    // Create Doctors
     const doctorsData = [
       {
         name: 'Rajesh Kumar',
@@ -128,7 +124,6 @@ const seedData = async () => {
       console.log(`Doctor created → ${d.email} / doctor123`);
     }
 
-    // Create sample appointment
     const doctor = await Doctor.findOne();
     await Appointment.create({
       patientId: patient._id,
