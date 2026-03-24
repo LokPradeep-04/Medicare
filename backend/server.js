@@ -1,12 +1,30 @@
 require('dotenv').config();
 
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
 const cors = require('cors');
 const connectDB = require('./config/db');
 
 connectDB();
 
 const app = express();
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
+});
+
+io.on('connection', (socket) => {
+  console.log('Client connected:', socket.id);
+  socket.on('disconnect', () => {
+    console.log('Client disconnected:', socket.id);
+  });
+});
 
 app.use(cors({
   origin: 'http://localhost:5173',
@@ -14,6 +32,12 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+// Attach io to every request so controllers can use it
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 
 const authRoutes = require('./routes/auth.routes');
 const doctorRoutes = require('./routes/doctor.routes');
@@ -32,6 +56,8 @@ app.get('/api/health', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+module.exports = { io };

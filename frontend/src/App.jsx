@@ -9,6 +9,7 @@ import DoctorsList from './pages/DoctorsList'
 import DoctorProfile from './pages/DoctorProfile'
 import BookAppointment from './pages/BookAppointment'
 import PatientDashboard from './pages/PatientDashboard'
+import Profile from './pages/Profile'
 import DoctorDashboard from './pages/DoctorDashboard'
 import AdminDashboard from './pages/AdminDashboard'
 
@@ -47,6 +48,11 @@ const App = () => {
           </ProtectedRoute>
         } />
 
+        <Route path='/profile' element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        } />
       </Routes>
     </BrowserRouter>
   )

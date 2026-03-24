@@ -31,8 +31,19 @@ const addDoctor = async (req, res) => {
 
 const getAllDoctors = async (req, res) => {
   try {
-    const doctors = await Doctor.find().populate('userId', 'name email phone');
-    res.status(200).json({ doctors });
+    // Pagination parameters
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    // Optional filters (department, search) could be added later
+    const total = await Doctor.countDocuments();
+    const doctors = await Doctor.find()
+      .populate('userId', 'name email phone')
+      .skip(skip)
+      .limit(limit);
+
+    res.status(200).json({ doctors, total, page, limit });
   } catch (error) {
     console.error('Error getting doctors:', error);
     res.status(500).json({ message: 'Internal server error' });

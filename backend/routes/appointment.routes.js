@@ -4,6 +4,7 @@ const {
   bookAppointment,
   getMyAppointments,
   cancelAppointment,
+  rescheduleAppointment,
   getDoctorAppointments,
   completeAppointment,
   getAllAppointments,
@@ -13,6 +14,7 @@ const protect = require('../middlewares/auth.middleware');
 router.post('/', protect, bookAppointment);
 router.get('/my', protect, getMyAppointments);
 router.patch('/:id/cancel', protect, cancelAppointment);
+router.patch('/:id/reschedule', protect, rescheduleAppointment);
 
 router.get('/doctor', protect, getDoctorAppointments);
 router.patch('/:id/complete', protect, completeAppointment);

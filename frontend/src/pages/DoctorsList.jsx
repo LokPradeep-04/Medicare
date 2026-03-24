@@ -13,38 +13,44 @@ const departments = [
 
 const DoctorsList = () => {
 
-  const [doctors, setDoctors] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState('')
-  const [selectedDept, setSelectedDept] = useState('All')
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [selectedDept, setSelectedDept] = useState('All');
+  const [page, setPage] = useState(1);
+  const limit = 10; // items per page
+  const [total, setTotal] = useState(0);
 
-  const API_BASE_URL = import.meta.env.VITE_API_URL
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/doctors`)
-        const data = await res.json()
+        const res = await fetch(`${API_BASE_URL}/doctors?page=${page}&limit=${limit}`);
+        const data = await res.json();
         if (res.ok) {
-          setDoctors(data.doctors)
+          setDoctors(data.doctors);
+          setTotal(data.total || 0);
         }
       } catch (error) {
-        console.log('Error fetching doctors:', error)
+        console.log('Error fetching doctors:', error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    fetchDoctors()
-  }, [])
+    };
+    fetchDoctors();
+  }, [page]);
 
   const filtered = doctors.filter(doc => {
-    const matchDept = selectedDept === 'All' || doc.department === selectedDept
+    const matchDept = selectedDept === 'All' || doc.department === selectedDept;
     const matchSearch = doc.userId?.name?.toLowerCase().includes(search.toLowerCase()) ||
-      doc.specialization?.toLowerCase().includes(search.toLowerCase())
-    return matchDept && matchSearch
-  })
+      doc.specialization?.toLowerCase().includes(search.toLowerCase());
+    return matchDept && matchSearch;
+  });
 
-  if (loading) return <Loader />
+  const totalPages = Math.ceil(total / limit);
+
+  if (loading) return <Loader />;
 
   return (
     <div>
@@ -102,11 +108,30 @@ const DoctorsList = () => {
           </div>
         )}
 
+        {/* Pagination Controls */}
+        <div className='flex justify-center items-center gap-4 mt-8'>
+          <button
+            onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+            disabled={page === 1}
+            className='px-4 py-2 bg-teal-600 text-white rounded disabled:opacity-50'
+          >
+            Previous
+          </button>
+          <span className='text-gray-700'>Page {page} of {totalPages || 1}</span>
+          <button
+            onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
+            disabled={page === totalPages || totalPages === 0}
+            className='px-4 py-2 bg-teal-600 text-white rounded disabled:opacity-50'
+          >
+            Next
+          </button>
+        </div>
+
       </div>
       <Footer />
       <Chatbot />
     </div>
-  )
-}
+  );
+};
 
 export default DoctorsList

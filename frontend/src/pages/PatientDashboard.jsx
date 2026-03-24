@@ -6,6 +6,7 @@ import Loader from '../components/Loader'
 import StatCard from '../components/StatCard'
 import AppointmentCard from '../components/AppointmentCard'
 import FilterTabs from '../components/FilterTabs'
+import RescheduleModal from '../components/RescheduleModal'
 import { AuthContext } from '../context/AuthContext'
 
 const FILTERS = ['All', 'Booked', 'Completed', 'Cancelled']
@@ -18,6 +19,7 @@ const PatientDashboard = () => {
   const [appointments, setAppointments] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState('All')
+  const [rescheduleTarget, setRescheduleTarget] = useState(null)
 
   const API_BASE_URL = import.meta.env.VITE_API_URL
 
@@ -66,6 +68,15 @@ const PatientDashboard = () => {
     <div className='bg-gray-50 min-h-screen'>
       <Navbar />
 
+      {rescheduleTarget && (
+        <RescheduleModal
+          appointment={rescheduleTarget}
+          token={token}
+          onClose={() => setRescheduleTarget(null)}
+          onSuccess={fetchAppointments}
+        />
+      )}
+
       <div className='max-w-5xl mx-auto px-4 py-10'>
 
         <div className='flex items-center justify-between mb-8'>
@@ -86,32 +97,13 @@ const PatientDashboard = () => {
         </div>
 
         <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8'>
-          <StatCard
-            icon='📅'
-            label='Upcoming'
-            value={upcoming}
-            color='bg-teal-50'
-          />
-          <StatCard
-            icon='✅'
-            label='Completed'
-            value={completed}
-            color='bg-green-50'
-          />
-          <StatCard
-            icon='❌'
-            label='Cancelled'
-            value={cancelled}
-            color='bg-red-50'
-          />
+          <StatCard icon='📅' label='Upcoming' value={upcoming} color='bg-teal-50' />
+          <StatCard icon='✅' label='Completed' value={completed} color='bg-green-50' />
+          <StatCard icon='❌' label='Cancelled' value={cancelled} color='bg-red-50' />
         </div>
 
         <div className='mb-5'>
-          <FilterTabs
-            filters={FILTERS}
-            activeFilter={activeFilter}
-            onSelect={setActiveFilter}
-          />
+          <FilterTabs filters={FILTERS} activeFilter={activeFilter} onSelect={setActiveFilter} />
         </div>
 
         {filtered.length === 0 ? (
@@ -132,6 +124,7 @@ const PatientDashboard = () => {
                 key={appointment._id}
                 appointment={appointment}
                 onCancel={handleCancel}
+                onReschedule={setRescheduleTarget}
               />
             ))}
           </div>

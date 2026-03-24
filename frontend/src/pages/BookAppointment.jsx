@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Chatbot from '../components/Chatbot'
@@ -7,6 +7,7 @@ import DoctorSummaryCard from '../components/DoctorSummaryCard'
 import SlotPicker from '../components/SlotPicker'
 import BookingSummary from '../components/BookingSummary'
 import { AuthContext } from '../context/AuthContext'
+import useSocket from '../hooks/useSocket'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL
 
@@ -62,6 +63,23 @@ const BookAppointment = () => {
     fetchSlots()
   }, [date, doctorId])
 
+  // Real-time slot updates via Socket.io
+  useSocket({
+    onSlotBooked: useCallback(({ doctorId: dId, date: d, time: t }) => {
+      // Remove slot if it matches current doctor and date view
+      if (dId === doctorId && d === date) {
+        setSlots(prev => prev.filter(s => s !== t))
+        if (selectedSlot === t) setSelectedSlot('')
+      }
+    }, [doctorId, date, selectedSlot]),
+    onSlotCancelled: useCallback(({ doctorId: dId, date: d, time: t }) => {
+      // Add the slot back if it matches current view
+      if (dId === doctorId && d === date) {
+        setSlots(prev => [...prev, t].sort())
+      }
+    }, [doctorId, date]),
+  })
+
   const handleBook = async () => {
     if (!date) return setError('Please select a date')
     if (!selectedSlot) return setError('Please select a time slot')
@@ -79,7 +97,6 @@ const BookAppointment = () => {
       const data = await res.json()
       if (res.ok) {
         setSuccess(true)
-        setTimeout(() => navigate('/dashboard'), 2000)
       } else {
         setError(data.message)
       }
@@ -96,15 +113,70 @@ const BookAppointment = () => {
     return (
       <div>
         <Navbar />
-        <div className='min-h-screen bg-gray-50 flex items-center justify-center'>
-          <div className='text-center'>
-            <div className='text-6xl mb-4'>✅</div>
-            <h2 className='text-2xl font-bold text-gray-900 mb-2'>
-              Appointment Booked!
-            </h2>
-            <p className='text-gray-500'>
-              Check your email for confirmation. Redirecting...
-            </p>
+        <div className='min-h-screen bg-gradient-to-br from-teal-50 via-white to-green-50 flex items-center justify-center px-4'>
+          <div className='bg-white rounded-3xl shadow-xl border border-gray-100 p-10 max-w-md w-full text-center animate-fade-in'>
+
+            {/* Success Icon */}
+            <div className='flex items-center justify-center mb-6'>
+              <div className='w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center'>
+                <svg className='w-10 h-10 text-teal-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2.5} d='M5 13l4 4L19 7' />
+                </svg>
+              </div>
+            </div>
+
+            <h2 className='text-2xl font-bold text-gray-900 mb-1'>Appointment Confirmed!</h2>
+            <p className='text-gray-500 text-sm mb-8'>Your booking has been successfully placed.</p>
+
+            {/* Booking Details */}
+            <div className='bg-gray-50 rounded-2xl p-5 text-left space-y-4 mb-8'>
+              <div className='flex items-center gap-3'>
+                <div className='w-9 h-9 bg-teal-100 rounded-xl flex items-center justify-center flex-shrink-0'>
+                  <svg className='w-5 h-5 text-teal-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' />
+                  </svg>
+                </div>
+                <div>
+                  <p className='text-xs text-gray-400 uppercase tracking-wide'>Doctor</p>
+                  <p className='font-semibold text-gray-900'>{doctor?.userId?.name || 'Your Doctor'}</p>
+                </div>
+              </div>
+
+              <div className='flex items-center gap-3'>
+                <div className='w-9 h-9 bg-teal-100 rounded-xl flex items-center justify-center flex-shrink-0'>
+                  <svg className='w-5 h-5 text-teal-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' />
+                  </svg>
+                </div>
+                <div>
+                  <p className='text-xs text-gray-400 uppercase tracking-wide'>Date</p>
+                  <p className='font-semibold text-gray-900'>
+                    {new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                  </p>
+                </div>
+              </div>
+
+              <div className='flex items-center gap-3'>
+                <div className='w-9 h-9 bg-teal-100 rounded-xl flex items-center justify-center flex-shrink-0'>
+                  <svg className='w-5 h-5 text-teal-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' />
+                  </svg>
+                </div>
+                <div>
+                  <p className='text-xs text-gray-400 uppercase tracking-wide'>Time</p>
+                  <p className='font-semibold text-gray-900'>{selectedSlot}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Button */}
+            <button
+              onClick={() => navigate('/dashboard')}
+              className='w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-xl transition-colors'
+            >
+              Go to Dashboard
+            </button>
+
           </div>
         </div>
       </div>
@@ -152,6 +224,7 @@ const BookAppointment = () => {
                   slots={slots}
                   selectedSlot={selectedSlot}
                   onSelect={setSelectedSlot}
+                  selectedDate={date}
                 />
               )}
             </div>
@@ -178,9 +251,6 @@ const BookAppointment = () => {
           >
             {booking ? 'Booking...' : 'Confirm Appointment'}
           </button>
-          <p className='text-center text-xs text-gray-400 mt-3'>
-            Redirecting to your dashboard...
-          </p>
         </div>
 
       </div>

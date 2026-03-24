@@ -4,7 +4,7 @@ const statusStyles = {
   cancelled: 'bg-red-50 text-red-700',
 }
 
-const AppointmentCard = ({ appointment, onCancel }) => {
+const AppointmentCard = ({ appointment, onCancel, onReschedule }) => {
 
   const { _id, doctorId, date, time, status } = appointment
 
@@ -33,12 +33,20 @@ const AppointmentCard = ({ appointment, onCancel }) => {
           {status.charAt(0).toUpperCase() + status.slice(1)}
         </span>
         {status === 'booked' && (
-          <button
-            onClick={() => onCancel(_id)}
-            className='text-xs bg-red-50 text-red-500 hover:bg-red-100 font-medium px-3 py-1 rounded-full transition-colors'
-          >
-            Cancel
-          </button>
+          <>
+            <button
+              onClick={() => onReschedule?.(appointment)}
+              className='text-xs bg-teal-50 text-teal-600 hover:bg-teal-100 font-medium px-3 py-1 rounded-full transition-colors'
+            >
+              Reschedule
+            </button>
+            <button
+              onClick={() => onCancel(_id)}
+              className='text-xs bg-red-50 text-red-500 hover:bg-red-100 font-medium px-3 py-1 rounded-full transition-colors'
+            >
+              Cancel
+            </button>
+          </>
         )}
       </div>
 
