@@ -1,3 +1,4 @@
+// MediCare Assistant Component for AI powered health guide
 import { useState, useRef, useEffect, useContext } from 'react'
 import ChatMessage from './ChatMessage'
 import { AuthContext } from '../context/AuthContext'
