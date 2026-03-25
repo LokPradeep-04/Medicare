@@ -150,7 +150,7 @@ const Chatbot = () => {
             <button
               onClick={() => sendMessage()}
               disabled={loading || !input.trim()}
-              className='bg-teal-600 hover:bg-teal-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-60 transition-colors'
+              className='bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-xl text-sm font-semibold disabled:opacity-60 transition-colors'
             >
               ➤
             </button>
