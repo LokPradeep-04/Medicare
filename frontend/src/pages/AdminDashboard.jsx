@@ -89,18 +89,18 @@ const AdminDashboard = () => {
       <Navbar />
       <div className='max-w-6xl mx-auto px-4 py-10'>
 
-        <div className='flex items-center justify-between mb-8'>
+        <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8'>
           <div>
             <h1 className='text-2xl font-bold text-gray-900'>
               Admin Dashboard ⚙️
             </h1>
-            <p className='text-gray-500 text-sm mt-1'>
+            <p className='text-gray-500 text-sm mt-1 leading-tight'>
               MediCare Hospital Management
             </p>
           </div>
           <button
             onClick={() => setShowAddDoctor(true)}
-            className='bg-teal-600 hover:bg-teal-700 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-colors'
+            className='w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white font-bold px-6 py-3 rounded-2xl text-sm transition-all shadow-lg shadow-teal-100'
           >
             + Add Doctor
           </button>

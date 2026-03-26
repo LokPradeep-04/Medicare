@@ -65,8 +65,8 @@ const Profile = () => {
     return (
         <div className="bg-gray-50 min-h-screen">
             <Navbar />
-            <div className="max-w-3xl mx-auto px-4 py-12">
-                <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+            <div className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
+                <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5 sm:p-8">
                     <div className="flex items-center gap-4 mb-8">
                         <div className="w-16 h-16 bg-teal-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold">
                             {user?.name?.charAt(0)}
