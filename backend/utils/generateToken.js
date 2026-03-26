@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken');
 
 const generateToken = (userId) => {
+  const secret = process.env.JWT_SECRET || 'medicare-default-secret-key-123';
   return jwt.sign(
     { userId },
-    process.env.JWT_SECRET,
+    secret,
     { expiresIn: "7d" }
   );
 };
