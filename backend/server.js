@@ -8,22 +8,22 @@ connectDB();
 
 const app = express();
 
-const allowedOrigins = [
-  process.env.FRONTEND_URL, 
-  'https://medicare-weld-seven.vercel.app',
-  'http://localhost:5173'
-].filter(Boolean);
-
+// Allow ALL origins to stop CORS errors during deployment debug
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true,
   credentials: true,
 }));
+
+// Log every request to help debug
+app.use((req, res, next) => {
+  console.log(`${req.method} request to ${req.url}`);
+  next();
+});
+
+// Catch unhandled crashes
+process.on('uncaughtException', (err) => {
+  console.error('CRITICAL CRASH:', err);
+});
 
 app.use(express.json());
 
