@@ -7,7 +7,6 @@ import DoctorSummaryCard from '../components/DoctorSummaryCard'
 import SlotPicker from '../components/SlotPicker'
 import BookingSummary from '../components/BookingSummary'
 import { AuthContext } from '../context/AuthContext'
-import useSocket from '../hooks/useSocket'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL
 
@@ -62,23 +61,6 @@ const BookAppointment = () => {
     }
     fetchSlots()
   }, [date, doctorId])
-
-  // Real-time slot updates via Socket.io
-  useSocket({
-    onSlotBooked: useCallback(({ doctorId: dId, date: d, time: t }) => {
-      // Remove slot if it matches current doctor and date view
-      if (dId === doctorId && d === date) {
-        setSlots(prev => prev.filter(s => s !== t))
-        if (selectedSlot === t) setSelectedSlot('')
-      }
-    }, [doctorId, date, selectedSlot]),
-    onSlotCancelled: useCallback(({ doctorId: dId, date: d, time: t }) => {
-      // Add the slot back if it matches current view
-      if (dId === doctorId && d === date) {
-        setSlots(prev => [...prev, t].sort())
-      }
-    }, [doctorId, date]),
-  })
 
   const handleBook = async () => {
     if (!date) return setError('Please select a date')

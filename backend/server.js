@@ -1,34 +1,14 @@
 require('dotenv').config();
 
 const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
 const cors = require('cors');
 const connectDB = require('./config/db');
 
 connectDB();
 
 const app = express();
-const server = http.createServer(app);
 
 const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:5173'].filter(Boolean);
-
-const io = new Server(server, {
-  cors: {
-    origin: allowedOrigins,
-    methods: ['GET', 'POST'],
-    credentials: true,
-  },
-  transports: ['polling', 'websocket'],
-  allowEIO3: true // for compatibility if needed
-});
-
-io.on('connection', (socket) => {
-  console.log('Client connected:', socket.id);
-  socket.on('disconnect', () => {
-    console.log('Client disconnected:', socket.id);
-  });
-});
 
 app.use(cors({
   origin: allowedOrigins,
@@ -36,12 +16,6 @@ app.use(cors({
 }));
 
 app.use(express.json());
-
-
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-});
 
 const authRoutes = require('./routes/auth.routes');
 const doctorRoutes = require('./routes/doctor.routes');
@@ -60,8 +34,6 @@ app.get('/api/health', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-module.exports = { io };
