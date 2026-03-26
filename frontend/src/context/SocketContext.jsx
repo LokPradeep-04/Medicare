@@ -9,7 +9,11 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io(SOCKET_URL, { transports: ['websocket'] });
+    const newSocket = io(SOCKET_URL, { 
+      transports: ['polling', 'websocket'],
+      reconnectionAttempts: 5,
+      reconnectionDelay: 2000 
+    });
     setSocket(newSocket);
 
     return () => {
