@@ -21,10 +21,10 @@ const bookAppointment = async (req, res) => {
       patientId, doctorId, date, time, status: 'booked',
     })
 
-    // Emit real-time event to all connected clients
+    
     req.io.emit('slotBooked', { doctorId, date, time })
 
-    // Send email confirmation
+    
     try {
       await sendEmail({
         email: req.user.email,
@@ -88,7 +88,7 @@ const cancelAppointment = async (req, res) => {
     appointment.status = 'cancelled';
     await appointment.save();
 
-    // Emit real-time event so slot becomes available again for all users
+    
     req.io.emit('slotCancelled', {
       doctorId: appointment.doctorId.toString(),
       date: appointment.date,
@@ -144,7 +144,7 @@ const rescheduleAppointment = async (req, res) => {
     if (appointment.status !== 'booked') {
       return res.status(400).json({ message: 'Only booked appointments can be rescheduled' });
     }
-    // Check the new slot is not already taken
+    
     const conflict = await Appointment.findOne({
       doctorId: appointment.doctorId,
       date,
@@ -161,9 +161,9 @@ const rescheduleAppointment = async (req, res) => {
     appointment.time = time;
     await appointment.save();
 
-    // Emit: old slot is now free
+    
     req.io.emit('slotCancelled', { doctorId: appointment.doctorId.toString(), date: oldDate, time: oldTime });
-    // Emit: new slot is now taken
+    
     req.io.emit('slotBooked', { doctorId: appointment.doctorId.toString(), date, time });
 
     const doctor = await Doctor.findById(appointment.doctorId).populate('userId', 'name')

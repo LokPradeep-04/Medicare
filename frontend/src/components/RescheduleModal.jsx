@@ -58,7 +58,7 @@ const RescheduleModal = ({ appointment, token, onClose, onSuccess }) => {
       const data = await res.json()
       if (res.ok) {
         setSuccess(true)
-        // We will call onSuccess when they close the success screen
+        
       } else {
         setError(data.message)
       }
@@ -140,7 +140,7 @@ const RescheduleModal = ({ appointment, token, onClose, onSuccess }) => {
           </div>
         ) : (
           <>
-            {/* Header */}
+            {}
             <div className='flex items-center justify-between mb-6'>
               <div>
                 <h2 className='text-xl font-bold text-gray-900'>Reschedule Appointment</h2>
@@ -156,12 +156,12 @@ const RescheduleModal = ({ appointment, token, onClose, onSuccess }) => {
               </button>
             </div>
 
-            {/* Current Slot */}
+            {}
             <div className='bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3 mb-6 text-sm text-amber-700'>
               <span className='font-semibold'>Current:</span> {appointment?.date} at {appointment?.time}
             </div>
 
-            {/* Date Picker */}
+            {}
             <div className='mb-5'>
               <label className='block text-sm font-medium text-gray-700 mb-2'>New Date</label>
               <input
@@ -173,7 +173,7 @@ const RescheduleModal = ({ appointment, token, onClose, onSuccess }) => {
               />
             </div>
 
-            {/* Slot Picker */}
+            {}
             {date && (
               <div className='mb-5'>
                 <label className='block text-sm font-medium text-gray-700 mb-2'>Available Slots</label>
@@ -223,14 +223,14 @@ const RescheduleModal = ({ appointment, token, onClose, onSuccess }) => {
               </div>
             )}
 
-            {/* Error */}
+            {}
             {error && (
               <div className='bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-4'>
                 {error}
               </div>
             )}
 
-            {/* Actions */}
+            {}
             <div className='flex gap-3 mt-2'>
               <button
                 onClick={onClose}

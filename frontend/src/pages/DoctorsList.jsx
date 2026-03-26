@@ -18,7 +18,7 @@ const DoctorsList = () => {
   const [search, setSearch] = useState('');
   const [selectedDept, setSelectedDept] = useState('All');
   const [page, setPage] = useState(1);
-  const limit = 10; // items per page
+  const limit = 10; 
   const [total, setTotal] = useState(0);
 
   const API_BASE_URL = import.meta.env.VITE_API_URL;
@@ -108,7 +108,7 @@ const DoctorsList = () => {
           </div>
         )}
 
-        {/* Pagination Controls */}
+        {}
         <div className='flex justify-center items-center gap-4 mt-8'>
           <button
             onClick={() => setPage(prev => Math.max(prev - 1, 1))}

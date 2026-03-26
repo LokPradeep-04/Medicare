@@ -116,7 +116,7 @@ const BookAppointment = () => {
         <div className='min-h-screen bg-gradient-to-br from-teal-50 via-white to-green-50 flex items-center justify-center px-4'>
           <div className='bg-white rounded-3xl shadow-xl border border-gray-100 p-10 max-w-md w-full text-center animate-fade-in'>
 
-            {/* Success Icon */}
+            {}
             <div className='flex items-center justify-center mb-6'>
               <div className='w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center'>
                 <svg className='w-10 h-10 text-teal-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -128,7 +128,7 @@ const BookAppointment = () => {
             <h2 className='text-2xl font-bold text-gray-900 mb-1'>Appointment Confirmed!</h2>
             <p className='text-gray-500 text-sm mb-8'>Your booking has been successfully placed.</p>
 
-            {/* Booking Details */}
+            {}
             <div className='bg-gray-50 rounded-2xl p-5 text-left space-y-4 mb-8'>
               <div className='flex items-center gap-3'>
                 <div className='w-9 h-9 bg-teal-100 rounded-xl flex items-center justify-center flex-shrink-0'>
@@ -169,7 +169,7 @@ const BookAppointment = () => {
               </div>
             </div>
 
-            {/* Action Button */}
+            {}
             <button
               onClick={() => navigate('/dashboard')}
               className='w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-xl transition-colors'

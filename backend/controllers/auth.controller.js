@@ -10,12 +10,12 @@ const register = async (req, res) => {
     if (!name || !email || !password || !phone || !age || !gender) {
       return res.status(400).json({ message: 'All fields are required' });
     }
-    // Check for existing email
+    
     const emailExists = await User.findOne({ email });
     if (emailExists) {
       return res.status(400).json({ message: 'Email already exists' });
     }
-    // Check for existing phone
+    
     const phoneExists = await User.findOne({ phone });
     if (phoneExists) {
       return res.status(400).json({ message: 'Phone number already exists' });
@@ -37,7 +37,7 @@ const register = async (req, res) => {
 
     res.status(201).json({ message: "User Created", token: token });
   } catch (error) {
-    // Handle duplicate key error from MongoDB (just in case)
+    
     if (error.code === 11000) {
       const dupField = Object.keys(error.keyPattern)[0];
       const msg = dupField === 'email' ? 'Email already exists' : dupField === 'phone' ? 'Phone number already exists' : 'Duplicate field';
@@ -102,7 +102,7 @@ const updateProfile = async (req, res) => {
 
     if (name) user.name = name;
     if (phone) {
-      // If phone is being changed, ensure it's not used by another user
+      
       if (phone !== user.phone) {
         const phoneTaken = await User.findOne({ phone, _id: { $ne: user._id } });
         if (phoneTaken) {
@@ -137,7 +137,7 @@ const updateProfile = async (req, res) => {
 
     res.status(200).json({ message: 'Profile updated successfully', user: userData });
   } catch (error) {
-    // Handle duplicate key error for phone/email updates
+    
     if (error.code === 11000) {
       const dupField = Object.keys(error.keyPattern)[0];
       const msg = dupField === 'email' ? 'Email already exists' : dupField === 'phone' ? 'Phone number already exists' : 'Duplicate field';

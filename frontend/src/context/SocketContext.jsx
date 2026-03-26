@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 
 export const SocketContext = createContext(null);
 
-const SOCKET_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3000';
+const SOCKET_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http:
 
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);

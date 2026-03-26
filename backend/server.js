@@ -11,9 +11,11 @@ connectDB();
 const app = express();
 const server = http.createServer(app);
 
+const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:5173'].filter(Boolean);
+
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173',
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -27,13 +29,13 @@ io.on('connection', (socket) => {
 });
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: allowedOrigins,
   credentials: true,
 }));
 
 app.use(express.json());
 
-// Attach io to every request so controllers can use it
+
 app.use((req, res, next) => {
   req.io = io;
   next();

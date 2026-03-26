@@ -5,7 +5,7 @@ const useSocket = (handlers = {}) => {
   const socket = useContext(SocketContext)
   const socketRef = useRef(socket)
   
-  // Keep socketRef.current populated to maintain compatibility with existing dependents
+  
   useEffect(() => {
     socketRef.current = socket
   }, [socket])
