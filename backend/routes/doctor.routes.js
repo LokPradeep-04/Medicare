@@ -9,13 +9,14 @@ const {
   getSlots,
 } = require('../controllers/doctor.controller');
 const protect = require('../middlewares/auth.middleware');
+const admin = require('../middlewares/admin.middleware');
 
 router.get('/', getAllDoctors);
 router.get('/:id', getDoctorById);
 router.get('/:id/slots', getSlots);
 
-router.post('/', protect, addDoctor);
-router.put('/:id', protect, updateDoctor);
-router.delete('/:id', protect, deleteDoctor);
+router.post('/', protect, admin, addDoctor);
+router.put('/:id', protect, admin, updateDoctor);
+router.delete('/:id', protect, admin, deleteDoctor);
 
 module.exports = router;
